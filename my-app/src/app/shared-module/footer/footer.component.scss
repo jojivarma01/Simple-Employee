@@ -1,0 +1,13 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    .footer-area {
+        border: 1px solid black;
+    }
+    .title {
+        text-align: center;
+        padding: 10px 10px;
+    }
+}

@@ -1,0 +1,15 @@
+<div class="text-center login-form"> 
+    <form [formGroup]="employeeLoginForm" class="text-center">
+    <div *ngIf="isCredentialsInValid" class="text-danger" >Invalid credentials</div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" class="form-control" formControlName="email" placeholder="Enter your email">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" formControlName="password" placeholder="Enter your password">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">Login</button>
+    </form>
+</div>
+  
