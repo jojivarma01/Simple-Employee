@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   }
 
   getSampleData(): void {
-    this.appService.getSampleData().subscribe((data: any) => {
+    this.appService.getEmployeesData().subscribe((data: any) => {
       this.sampleData = data;
       console.log('sampleData-', this.sampleData);
     });
