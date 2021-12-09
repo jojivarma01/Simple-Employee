@@ -1,34 +1,37 @@
 <div class="text-center edit-form"> 
-  <form [formGroup]="employeeForm" class="text-center">
+  <form [formGroup]="employeeForm">
     <div class="form-switch">
       <label class="px-5">Edit the data for exiting employee</label>
       <input class="form-check-input" type="checkbox" formControlName="isNewForm" role="switch" id="flexSwitchCheckDefault">
       <label class="px-3">Add new employee</label>
     </div>
-    <div class="form-group">
+    <div class="form-group mt-2">
       <label for="firstName">First Name</label>
       <input type="text" class="form-control" formControlName="firstName" placeholder="Enter first name">
       <small class="text-danger" *ngIf="employeeForm.controls['firstName'].hasError('maxlength')">First name should not be 15 characters</small>
     </div>
-    <div class="form-group">
+    <div class="form-group mt-2">
       <label for="lastName">Last name</label>
       <input type="text" class="form-control" formControlName="lastName" placeholder="Enter last name">
       <small class="text-danger" *ngIf="employeeForm.controls['lastName'].hasError('maxlength')">Last name should not be 15 characters</small>
     </div>
-    <div>
+    <div class="form-group mt-2">
       <label for="phoneNumber">Phone number</label>
       <input type="number" class="form-control" formControlName="phoneNumber" placeholder="Enter phone number" (blur)="validatePhoneNumber()">
       <small class="text-danger" *ngIf="isPhoneNumberInValid">Phone number already exists or invalid</small>
     </div>
-    <div>
+    <div class="form-group mt-2">
       <label for="email">Email</label>
       <input type="email" class="form-control" formControlName="email" placeholder="Enter your email" (blur)="validateEmail()">
       <small class="text-danger" *ngIf="isEmailInValid">Email address already exists or invalid</small>
     </div>
-    <div>
+    <div class="form-group mt-2">
       <label for="password">Password</label>
       <input type="password" class="form-control" formControlName="password" placeholder="Enter your password">
     </div>
-    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+    <div class="form-group mt-2">
+      <button type="button" class="btn btn-secondary mx-4" (click)="onReset()">reset</button>
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+    </div>
   </form>
 </div>

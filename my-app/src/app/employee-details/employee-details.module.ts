@@ -3,14 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { EmployeeDetailsRoutingModule } from './employee-details-routing.module';
 import { EmployeeDetailsComponent } from './employee-details.component';
+import { FullNamePipe } from '../shared-module/pipes/full-name.pipe';
+import { SharedModuleModule } from '../shared-module/shared-module.module';
 
 
 @NgModule({
   declarations: [
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
   ],
   imports: [
     CommonModule,
+    SharedModuleModule,
     EmployeeDetailsRoutingModule
   ]
 })

@@ -1,4 +1,12 @@
 <div class="employee-details container border border-info">
+  <div class="search-area">
+    <div class="input-group text-right my-2 search-box">  
+      <input #searchEmployee type="search" placeholder="Search here..." class="form-control" >  
+      <div class="input-group-append">  
+        <button type="button" class="btn btn-primary" (click)="onSearch(searchEmployee.value)"><i class="bi bi-search"></i></button>  
+      </div>  
+    </div> 
+  </div>
   <div class="row justify-content-md-center bg-success p-3">
     <div class="col-3">
       FullName
@@ -14,14 +22,14 @@
     </div>
   </div>
   <div class="row m-3 bg-light" *ngFor="let employee of employeesData">
-    <div class="col-3 p-1">
-      {{employee.firstName + ' ' + employee.lastName}}
+    <div class="col-3 p-1" appColorChange>
+      {{employee | fullName}}
     </div>
     <div class="col-3 p-1">
-      {{employee.phoneNumber}}
+      {{employee?.phoneNumber}}
     </div>
     <div class="col-3 p-1">
-      {{employee.email}}
+      {{employee?.email}}
     </div>
     <div class="col-3">
       <a (click)="removeEmployee(employee)"><i class="bi bi-trash-fill"></i></a>

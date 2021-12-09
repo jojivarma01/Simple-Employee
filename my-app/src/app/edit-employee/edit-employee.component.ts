@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, MaxLengthValidator, Validators } from '@angular/forms';
 import { Employee } from '../models/employee.model';
-import { AppService } from '../Services/app.service';
+import { AppService } from '../shared-module/services/app.service';
 
 @Component({
   selector: 'app-edit-employee',
@@ -73,22 +73,28 @@ export class EditEmployeeComponent implements OnInit {
     this.appService.$loggedInEmployeeData.subscribe((data) => {
       employee = data;
     });
-    if(this.employeeForm.valid && !employee) {
+    if(this.employeeForm.valid && this.employeeForm.controls['isNewForm'].value) {
       this.employeeData = this.employeeForm.value;
-      const status = this.appService.saveEmployeeData(this.employeeData).subscribe(()=>{});
-      console.log('status of save-', status);
-      this.appService.getEmployeesData().subscribe((data) => {
-        console.log('getData-', data);
+      console.log('empl data-', this.employeeData);
+      this.appService.saveEmployeeData(this.employeeData).subscribe((status) => {
+        if(status) {
+          this.employeeForm.reset();
+        }
       });
-    } else if (this.employeeForm.valid && employee) {
+
+    } else if (this.employeeForm.valid && !this.employeeForm.controls['isNewForm'].value) {
         this.employeeData = this.employeeForm.value;
         this.employeeData.id = employee.id;
-        const status = this.appService.updateEmployee(this.employeeData).subscribe(()=>{});
-        console.log('update status of employee-', status);
-        this.appService.getEmployeesData().subscribe((data) => {
-          console.log('getData-', data);
+        this.appService.updateEmployee(this.employeeData).subscribe((status) => {
+          if(status) {
+            this.employeeForm.reset();
+          }
         });
     }
+  }
+
+  onReset(): void {
+    this.employeeForm.reset();
   }
 
   checkForLoggedInEmployee(): void {

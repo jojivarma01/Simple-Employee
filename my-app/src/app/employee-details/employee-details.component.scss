@@ -1,5 +1,16 @@
 .employee-details {
     font-size: 16px;
+    max-height: 500px;
+    overflow-y: scroll;
+
+    .search-area {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        .search-box {
+            width: 300px;
+        }
+    }
 
     a:hover {
         cursor: pointer;
