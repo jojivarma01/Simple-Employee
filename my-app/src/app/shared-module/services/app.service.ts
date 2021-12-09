@@ -13,8 +13,8 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  getEmployeesData(): Observable<any> {
-    return this.http.get<any>(this.rootURL + '/employees');
+  getEmployeesData(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(this.rootURL + '/employees');
   }
 
   saveEmployeeData(employeeData: Employee): Observable<string> {

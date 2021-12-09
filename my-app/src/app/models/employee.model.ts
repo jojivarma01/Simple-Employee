@@ -6,3 +6,8 @@ export interface Employee {
     phoneNumber: number;
     password: string;
 }
+
+export interface User {
+    userName: string;
+    userEmail: string;
+}

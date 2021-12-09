@@ -69,10 +69,7 @@ export class EditEmployeeComponent implements OnInit {
 
   onSubmit(): void {
     console.log('formValid?-', this.employeeForm.valid, this.employeeForm.value);
-    let employee = {} as Employee;
-    this.appService.$loggedInEmployeeData.subscribe((data) => {
-      employee = data;
-    });
+    
     if(this.employeeForm.valid && this.employeeForm.controls['isNewForm'].value) {
       this.employeeData = this.employeeForm.value;
       console.log('empl data-', this.employeeData);
@@ -83,6 +80,10 @@ export class EditEmployeeComponent implements OnInit {
       });
 
     } else if (this.employeeForm.valid && !this.employeeForm.controls['isNewForm'].value) {
+        let employee = {} as Employee;
+        this.appService.$loggedInEmployeeData.subscribe((data) => {
+          employee = data;
+        });
         this.employeeData = this.employeeForm.value;
         this.employeeData.id = employee.id;
         this.appService.updateEmployee(this.employeeData).subscribe((status) => {

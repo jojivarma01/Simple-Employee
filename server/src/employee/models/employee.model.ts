@@ -18,7 +18,7 @@ export class Employee {
   phoneNumber: number;
 
   @Column()
-  password: number;
+  password: string;
 }
 
 let connection:Connection;
