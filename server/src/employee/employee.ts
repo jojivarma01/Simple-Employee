@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { getEmployeeRepository, Employee, EmployeeId } from './models/employee.model';
+import { getEmployeeRepository, Employee, LoginAuth } from './models/employee.model';
 
 export const router: Router = Router();
+
+const jwt = require('jsonwebtoken');
 
 router.get('/api/employees', async function (req: Request, res: Response, next: NextFunction) {
   try {
@@ -92,6 +94,33 @@ router.post('/api/AuthenticateEmployee', async function (req: Request, res: Resp
   }
   catch (err) {
     res.status(500).send(err);
+    return next(err);
+  }
+});
+
+router.post('/api/auth', async function (req: Request, res: Response, next: NextFunction) {
+  try {
+    const repository = await getEmployeeRepository();
+    const employees = await repository.find();
+    const filteredEmployeeData = employees.filter(x => x.email === req.body.email);
+    let loginAuth = {} as LoginAuth;
+    if(filteredEmployeeData.length > 0) 
+    {
+      if (filteredEmployeeData[0].password === req.body.password) {
+        const createdtoken = jwt.sign({email: req.body.email}, 'secret');
+        loginAuth.empId = filteredEmployeeData[0].id;
+        loginAuth.isLoginSuccess = true;
+        loginAuth.userToken = createdtoken;
+      }
+    }
+    if (Object.keys(loginAuth).length > 0) {
+      res.status(200).json(loginAuth);
+    } else {
+      res.status(403).send(loginAuth);
+    }
+  }
+  catch (err) {
+    res.status(500).json(err);
     return next(err);
   }
 });

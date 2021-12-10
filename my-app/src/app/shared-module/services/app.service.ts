@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Employee, EmployeeId, UserAuthenticate } from '../../models/employee.model';
+import { Employee, LoginAuth, UserAuthenticate } from '../../models/employee.model';
 import { EmployeeDetailsModule } from 'src/app/employee-details/employee-details.module';
 
 @Injectable({
@@ -36,6 +36,10 @@ export class AppService {
 
   getEmployeeData(employeeId: number): Observable<Employee> {
     return this.http.get<Employee>(this.rootURL + '/employee/' + employeeId);
+  }
+
+  authLogin(userAuthenticate: UserAuthenticate): Observable<LoginAuth> {
+    return this.http.post<LoginAuth>(this.rootURL + '/auth', userAuthenticate);
   }
 
   public $loggedInEmployeeData = new BehaviorSubject<Employee>(this.initialEmployeeData);

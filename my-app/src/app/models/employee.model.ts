@@ -17,6 +17,8 @@ export interface UserAuthenticate {
     password: string;
 }
 
-export interface EmployeeId {
-    employeeId: number;
+export interface LoginAuth {
+    empId: number;
+    isLoginSuccess: boolean;
+    userToken: string;
 }

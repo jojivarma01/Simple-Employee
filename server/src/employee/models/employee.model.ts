@@ -21,8 +21,10 @@ export class Employee {
   password: string;
 }
 
-export class EmployeeId {
-  employeeId: number;
+export interface LoginAuth {
+  empId: number;
+  isLoginSuccess: boolean;
+  userToken: string;
 }
 
 let connection:Connection;

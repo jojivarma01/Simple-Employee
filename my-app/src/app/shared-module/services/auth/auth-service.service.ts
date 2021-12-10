@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
-import { Employee, EmployeeId, User, UserAuthenticate } from '../../../models/employee.model';
+import { Employee, LoginAuth, User, UserAuthenticate } from '../../../models/employee.model';
 import { AppService } from '../app.service';
 
 @Injectable({
@@ -8,25 +8,23 @@ import { AppService } from '../app.service';
 })
 export class AuthServiceService {
 
-  public user = {} as User;
+  public loginAuth = {} as LoginAuth;
   public employeesData: Employee[] = [];
-  public $userData = new BehaviorSubject<User>(this.user);
+  public $userData = new BehaviorSubject<LoginAuth>(this.loginAuth);
 
   constructor(private appService: AppService) { }
 
   authenticateUser(userEmail: string, userPassword: string) {
     const userAuthenticate: UserAuthenticate = {email: userEmail, password: userPassword};
-    this.appService.authenticateEmployee(userAuthenticate).subscribe((res) => {
+    this.appService.authLogin(userAuthenticate).subscribe((res) => {
       if(res) {
-        this.appService.$loggedInEmployeeData.next(res);
-        this.setToken(res.firstName+ ' '+ res.lastName, res.email);
+        this.setToken(res);
       }
     });
   }
 
-  setToken(fullName: string, userEmail: string) {
-    this.$userData.next({userName: fullName, userEmail});
-    const tokenValue = {name: fullName, userEmail};
-    localStorage.setItem('user_token', JSON.stringify(tokenValue) + Math.random());
+  setToken(loggedInUser: LoginAuth) {
+    this.$userData.next(loggedInUser);
+    localStorage.setItem('user_token', loggedInUser.userToken);
   }
 }
