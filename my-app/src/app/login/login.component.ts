@@ -13,10 +13,11 @@ import { AuthServiceService } from '../shared-module/services/auth/auth-service.
 export class LoginComponent implements OnInit {
 
   public employeeLoginForm = new FormGroup({});
-  public employeesData: Employee[] = [];
+  //public employeesData: Employee[] = [];
   public isCredentialsInValid: boolean = false;
 
   constructor(private authService: AuthServiceService,
+              private appService: AppService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -32,37 +33,17 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.employeeLoginForm.valid) {
-      // this.appService.getEmployeesData().subscribe((data) => {
-      //   if(data) {
-      //     this.employeesData = data;
-      //     const filteredEmployeeData = this.employeesData.filter(x => x.email === this.employeeLoginForm.controls['email'].value);
-      //     if(filteredEmployeeData.length > 0) 
-      //     {
-      //       this.isCredentialsInValid = filteredEmployeeData[0].password !== this.employeeLoginForm.controls['password'].value;
-      //       if (this.isCredentialsInValid) {
-      //         this.appService.$loggedInEmployeeData.next(filteredEmployeeData[0]);
-      //         this.router.navigate(['edit']);
-      //       }
-      //       else {
-      //         this.isCredentialsInValid = true;
-      //       }
-      //     }
-      //     else {
-      //       this.isCredentialsInValid = true;
-      //     }
-      //   }
-      // });
       const email = this.employeeLoginForm.controls['email'].value;
       const password = this.employeeLoginForm.controls['password'].value;
-      this.employeesData = this.authService.authenticateUser(email, password);
-      if (!this.employeesData) {
-        this.isCredentialsInValid = true;
-      } else {
-        this.router.navigate(['edit']);
-      }
-    }
-    else {
-      this.isCredentialsInValid = true;
+      this.authService.authenticateUser(email, password);
+      this.appService.$loggedInEmployeeData.subscribe((employee) => {
+        if (Object.keys(employee).length > 0) {
+          this.isCredentialsInValid = true;
+          this.router.navigate(['edit']);
+        } else {
+          this.router.navigate(['login']);
+        }
+      });
     }
   }
 

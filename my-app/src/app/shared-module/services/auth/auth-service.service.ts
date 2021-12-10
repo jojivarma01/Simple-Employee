@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Employee, User } from '../../../models/employee.model';
+import { BehaviorSubject, map } from 'rxjs';
+import { Employee, EmployeeId, User, UserAuthenticate } from '../../../models/employee.model';
 import { AppService } from '../app.service';
 
 @Injectable({
@@ -14,26 +14,13 @@ export class AuthServiceService {
 
   constructor(private appService: AppService) { }
 
-  authenticateUser(userEmail: string, userPassword: string): Employee[] {
-    this.appService.getEmployeesData().subscribe((data: Employee[]) => {
-      if(data) {
-        const filteredEmployeeData = data.filter(x => x.email === userEmail);
-        if(filteredEmployeeData.length > 0) 
-        {
-          if (filteredEmployeeData[0].password === userPassword) {
-            const fullName = filteredEmployeeData[0].firstName+ ' ' +filteredEmployeeData[0].lastName;
-            this.setToken(fullName, userEmail);
-            console.log('auth, token', localStorage.getItem('user_token'));
-            this.employeesData = data;
-            this.appService.$loggedInEmployeeData.next(filteredEmployeeData[0]);
-          }
-        }
-      } 
-    }, (error: Error) => {
-      return [] as Employee[];
+  authenticateUser(userEmail: string, userPassword: string) {
+    const userAuthenticate: UserAuthenticate = {email: userEmail, password: userPassword};
+    this.appService.authenticateEmployee(userAuthenticate).subscribe((res) => {
+      if(res) {
+        this.appService.$loggedInEmployeeData.next(res);
+      }
     });
-
-    return this.employeesData;
   }
 
   setToken(fullName: string, userEmail: string) {

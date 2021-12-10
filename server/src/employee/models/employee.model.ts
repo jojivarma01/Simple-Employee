@@ -21,6 +21,10 @@ export class Employee {
   password: string;
 }
 
+export class EmployeeId {
+  employeeId: number;
+}
+
 let connection:Connection;
 
 export async function getEmployeeRepository(): Promise<Repository<Employee>> {

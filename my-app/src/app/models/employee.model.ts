@@ -11,3 +11,12 @@ export interface User {
     userName: string;
     userEmail: string;
 }
+
+export interface UserAuthenticate {
+    email: string;
+    password: string;
+}
+
+export interface EmployeeId {
+    employeeId: number;
+}

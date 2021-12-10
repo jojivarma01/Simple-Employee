@@ -11,8 +11,6 @@ export class SimpleInterceptor implements HttpInterceptor {
     constructor(private router: Router) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token: any = localStorage.getItem('user_token');
-        console.log(token);
         if(localStorage.getItem('user_token') != null) {
             const request = req.clone({
                 headers: req.headers.set('Authorization', 'Bearer ' + localStorage.getItem('user_token'))
@@ -21,10 +19,10 @@ export class SimpleInterceptor implements HttpInterceptor {
             return next.handle(request).pipe(
                 tap (
                     (success) => {
-                        console.log(success instanceof HttpResponse);
+                        //console.log('success',success instanceof HttpResponse);
                     },
                     (error) => {
-                        console.log(error instanceof HttpResponse);
+                        //console.log('error',error instanceof HttpResponse);
                         if (error.status === 401) {
                             localStorage.removeItem('user_token');
                             this.router.navigate(['login']);

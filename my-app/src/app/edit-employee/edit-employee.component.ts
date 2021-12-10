@@ -101,7 +101,9 @@ export class EditEmployeeComponent implements OnInit {
   checkForLoggedInEmployee(): void {
     let employee = {} as Employee;
     this.appService.$loggedInEmployeeData.subscribe((data) => {
-      employee = data;
+      if (data) {
+        employee = data;
+      }
     });
     if (employee) {
       this.employeeForm.controls['firstName'].setValue(employee.firstName);
