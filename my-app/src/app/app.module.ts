@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { SharedModuleModule } from './shared-module/shared-module.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SimpleInterceptor } from './shared-module/Interceptor/simple-interceptor';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { SimpleInterceptor } from './shared-module/Interceptor/simple-intercepto
     HttpClientModule,
     AppRoutingModule,
     SharedModuleModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true}],
   bootstrap: [AppComponent]
