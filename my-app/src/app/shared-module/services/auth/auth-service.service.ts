@@ -19,6 +19,7 @@ export class AuthServiceService {
     this.appService.authenticateEmployee(userAuthenticate).subscribe((res) => {
       if(res) {
         this.appService.$loggedInEmployeeData.next(res);
+        this.setToken(res.firstName+ ' '+ res.lastName, res.email);
       }
     });
   }
