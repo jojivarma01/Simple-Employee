@@ -41,10 +41,10 @@ export class LoginComponent implements OnInit {
             if(Object.keys(loginAuth).length > 0) {
               this.appService.$loggedInEmployeeData.next(employee);
             }
-          })
-          this.isCredentialsInValid = true;
-          this.router.navigate(['edit']);
+          });
+          this.router.navigate(['home']);
         } else {
+          this.isCredentialsInValid = true;
           this.router.navigate(['login']);
         }
       });

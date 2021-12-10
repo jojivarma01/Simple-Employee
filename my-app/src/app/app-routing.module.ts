@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from './shared-module/services/auth-guards/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -9,11 +10,13 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./home-screen/home-screen.module').then(m => m.HomeScreenModule)
+    loadChildren: () => import('./home-screen/home-screen.module').then(m => m.HomeScreenModule),
+    canActivate: [AuthGuardService]
   },
   {
     path: 'edit',
-    loadChildren: () => import('./edit-employee/edit-employee.module').then(m => m.EditEmployeeModule)
+    loadChildren: () => import('./edit-employee/edit-employee.module').then(m => m.EditEmployeeModule),
+    canActivate: [AuthGuardService]
   },
   {
     path: 'login',
@@ -21,7 +24,8 @@ const routes: Routes = [
   },
   {
     path: 'details',
-    loadChildren: () => import('./employee-details/employee-details.module').then(m => m.EmployeeDetailsModule)
+    loadChildren: () => import('./employee-details/employee-details.module').then(m => m.EmployeeDetailsModule),
+    canActivate: [AuthGuardService]
   },
   {
     path: '**',

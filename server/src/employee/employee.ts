@@ -57,7 +57,6 @@ router.get('/api/employee/:id', async function (req: Request, res: Response, nex
   try {
     const repository = await getEmployeeRepository();
     const employee = await repository.findOne(req.params.id);
-    console.log('employee', employee);
     res.send(employee);
   }
   catch (err) {
