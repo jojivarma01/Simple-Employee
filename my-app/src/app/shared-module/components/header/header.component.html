@@ -1,3 +1,24 @@
-<header class="header">
-    <h1 class="title">Welcome to Simple Employee Tool</h1>
+<header class="header row px-4 bg-dark">
+    <div class="title col-11">
+        Welcome to Simple Employee Tool
+    </div>
+    <div class="dropdown text-right col-1 mt-4 pt-2">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="bi bi-person-circle"></i>
+        </a> 
+		<ul class="dropdown-menu text-center">
+            <li>
+                <div *ngIf="!isLogoutEnabled" (click)="onLogin()">
+                    <span class="ml-3">login</span>
+                    <span class="ml-4"><i class="bi bi-box-arrow-left"></i></span>
+                </div>
+            </li>
+			<li>
+                <div *ngIf="isLogoutEnabled" (click)="onLogout()">
+                    <span class="ml-3">logout</span>
+                    <span class="ml-3"><i class="bi bi-box-arrow-right"></i></span>
+                </div>
+            </li>
+		</ul>
+    </div>
 </header>
