@@ -86,6 +86,7 @@ router.get('/api/employee/:id', async function (req: Request, res: Response, nex
     console.log('user_token', user_token);
     console.log('sync', jwt.verify(user_token, 'secret'));
     const isTokenVerified = jwt.verify(user_token, 'secret');
+    console.log(isTokenVerified);
     if (isTokenVerified) {
       const repository = await getEmployeeRepository();
       const employee = await repository.findOne(req.params.id);
@@ -137,7 +138,7 @@ router.post('/api/auth', async function (req: Request, res: Response, next: Next
         loginAuth.userToken = createdtoken;
       }
     }
-    if (Object.keys(loginAuth).length > 0) {
+    if (Object.keys(loginAuth).length > 0 && loginAuth.isLoginSuccess) {
       res.status(200).json(loginAuth);
     } else {
       res.status(403).send('login failed');

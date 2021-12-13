@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Employee, LoginAuth, UserAuthenticate } from '../../models/employee.model';
+import { Employee, LoginAuth, UserAuthenticate } from '../models/employee.model';
 import { EmployeeDetailsModule } from 'src/app/employee-details/employee-details.module';
 
 @Injectable({

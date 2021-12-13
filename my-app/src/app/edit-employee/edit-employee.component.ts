@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, MaxLengthValidator, Validators } from '@angular/forms';
-import { Employee } from '../models/employee.model';
+import { Employee } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
 
 @Component({
@@ -69,10 +69,8 @@ export class EditEmployeeComponent implements OnInit {
 
   onSubmit(): void {
     console.log('formValid?-', this.employeeForm.valid, this.employeeForm.value);
-    
     if(this.employeeForm.valid && this.employeeForm.controls['isNewForm'].value) {
       this.employeeData = this.employeeForm.value;
-      console.log('empl data-', this.employeeData);
       this.appService.saveEmployeeData(this.employeeData).subscribe((status) => {
         if(status) {
           this.employeeForm.reset();

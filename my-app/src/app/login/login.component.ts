@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Employee, LoginAuth } from '../models/employee.model';
+import { Employee, LoginAuth } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
 import { AuthServiceService } from '../shared-module/services/auth/auth-service.service';
 
@@ -30,15 +30,15 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  async onSubmit() {
+  onSubmit() {
     if (this.employeeLoginForm.valid) {
       const email = this.employeeLoginForm.controls['email'].value;
       const password = this.employeeLoginForm.controls['password'].value;
-      await this.authService.authenticateUser(email, password);
-      await this.authService.$userData.subscribe((loginAuth: LoginAuth) => {
+      this.authService.authenticateUser(email, password);
+      this.authService.$userData.subscribe((loginAuth: LoginAuth) => {
         if (Object.keys(loginAuth).length > 0 && loginAuth.isLoginSuccess) {
           this.appService.getEmployeeData(loginAuth.empId).subscribe((employee: Employee) => {
-            if(Object.keys(loginAuth).length > 0) {
+            if(Object.keys(employee).length > 0) {
               this.appService.$loggedInEmployeeData.next(employee);
             }
           });

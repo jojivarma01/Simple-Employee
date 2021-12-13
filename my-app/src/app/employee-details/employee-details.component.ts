@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Employee } from '../models/employee.model';
+import { Employee } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
 
 @Component({
