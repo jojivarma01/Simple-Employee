@@ -4,7 +4,7 @@ Simple employee login with server
 # Run the following commands in server folder
 npm install express --save
 npm install nodemon --save-dev
-npm i express @types/express typescript typeorm sqlite3 ts-node --save
+npm i express @types/express typescript typeorm sqlite3 ts-node jsonwebtoken --save
 
 # Run the following command in Angular app
 npm i
