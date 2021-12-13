@@ -14,13 +14,13 @@ export class AppComponent implements OnInit {
   constructor(private appService: AppService) {}
 
   ngOnInit() {
-    this.getSampleData();
+    // this.getSampleData();
   }
 
-  getSampleData(): void {
-    this.appService.getEmployeesData().subscribe((data: any) => {
-      this.sampleData = data;
-      console.log('sampleData-', this.sampleData);
-    });
-  }
+  // getSampleData(): void {
+  //   this.appService.getEmployeesData().subscribe((data: any) => {
+  //     this.sampleData = data;
+  //     console.log('sampleData-', this.sampleData);
+  //   });
+  // }
 }

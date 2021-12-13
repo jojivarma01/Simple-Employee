@@ -30,10 +30,6 @@ export class AppService {
     return this.http.put<string>(this.rootURL + '/updateEmployee/' + employee.id, employee);
   }
 
-  authenticateEmployee(userAuthenticate: UserAuthenticate): Observable<Employee> {
-    return this.http.post<Employee>(this.rootURL + '/authenticateEmployee', userAuthenticate);
-  }
-
   getEmployeeData(employeeId: number): Observable<Employee> {
     return this.http.get<Employee>(this.rootURL + '/employee/' + employeeId);
   }
