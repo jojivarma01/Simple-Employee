@@ -17,16 +17,26 @@
     <div class="form-group mt-2">
       <label for="phoneNumber">Phone number</label>
       <input type="number" class="form-control" formControlName="phoneNumber" placeholder="Enter phone number" (blur)="validatePhoneNumber()">
-      <small class="text-danger" *ngIf="isPhoneNumberInValid">Phone number already exists or invalid</small>
+      <small class="text-danger"
+       *ngIf="isPhoneNumberInValid || employeeForm.controls['phoneNumber'].hasError('pattern')">
+       Phone number already exists or invalid
+      </small>
     </div>
     <div class="form-group mt-2">
       <label for="email">Email</label>
       <input type="email" class="form-control" formControlName="email" placeholder="Enter your email" (blur)="validateEmail()">
-      <small class="text-danger" *ngIf="isEmailInValid">Email address already exists or invalid</small>
+      <small class="text-danger"
+       *ngIf="isEmailInValid || employeeForm.controls['email'].hasError('email')">
+        Email address already exists or invalid
+      </small>
     </div>
     <div class="form-group mt-2">
       <label for="password">Password</label>
       <input type="password" class="form-control" formControlName="password" placeholder="Enter your password">
+      <small class="text-danger"
+       *ngIf="employeeForm.controls['password'].hasError('minLength')">
+        Email address already exists or invalid
+      </small>
     </div>
     <div class="form-group mt-2">
       <button type="button" class="btn btn-secondary mx-4" (click)="onReset()">reset</button>

@@ -31,8 +31,8 @@ export class EditEmployeeComponent implements OnInit {
       isNewForm: new FormControl(true, [Validators.required]),
       firstName: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
       lastName: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
-      phoneNumber: new FormControl(null, [Validators.required, Validators.min(10)]),
-      email: new FormControl(null, [Validators.required]),
+      phoneNumber: new FormControl(null, [Validators.required, Validators.pattern("^[0-9]{10}$")]),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
     });
   }
