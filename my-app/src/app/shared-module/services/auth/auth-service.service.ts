@@ -56,5 +56,6 @@ export class AuthServiceService {
   setTimerOut() {
     this.router.navigate(['login']);
     localStorage.removeItem('user_token');
+    this.$userData.next({} as LoginAuth);
   }
 }
