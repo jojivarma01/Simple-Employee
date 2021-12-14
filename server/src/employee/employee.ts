@@ -81,12 +81,8 @@ router.put('/api/updateEmployee/:id', async function (req: Request, res: Respons
 router.get('/api/employee/:id', async function (req: Request, res: Response, next: NextFunction) {
   try {
     const authHeader = req.headers['authorization'];
-    console.log('auth header', authHeader);
     const user_token = authHeader && authHeader.split('Bearer ')[1];
-    console.log('user_token', user_token);
-    console.log('sync', jwt.verify(user_token, 'secret'));
     const isTokenVerified = jwt.verify(user_token, 'secret');
-    console.log(isTokenVerified);
     if (isTokenVerified) {
       const repository = await getEmployeeRepository();
       const employee = await repository.findOne(req.params.id);
