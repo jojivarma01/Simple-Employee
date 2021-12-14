@@ -30,18 +30,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.employeeLoginForm.valid) {
       const email = this.employeeLoginForm.controls['email'].value;
       const password = this.employeeLoginForm.controls['password'].value;
       this.authService.authenticateUser(email, password);
       this.authService.$userData.subscribe((loginAuth: LoginAuth) => {
         if (Object.keys(loginAuth).length > 0 && loginAuth.isLoginSuccess) {
-          this.appService.getEmployeeData(loginAuth.empId).subscribe((employee: Employee) => {
-            if(Object.keys(employee).length > 0) {
-              this.appService.$loggedInEmployeeData.next(employee);
-            }
-          });
           this.router.navigate(['home']);
         } else {
           this.isCredentialsInValid = true;

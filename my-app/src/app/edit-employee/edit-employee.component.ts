@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, MaxLengthValidator, Validators } from '@angular/forms';
-import { Employee } from '../shared-module/models/employee.model';
+import { Employee, LoginAuth } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
+import { AuthServiceService } from '../shared-module/services/auth/auth-service.service';
 
 @Component({
   selector: 'app-edit-employee',
@@ -15,8 +16,10 @@ export class EditEmployeeComponent implements OnInit {
   public employeesData: Employee[] = [];
   public isEmailInValid: boolean = false;
   public isPhoneNumberInValid: boolean = false;
+  public employeeId: number = 0;
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService,
+              private authService: AuthServiceService) { }
 
   ngOnInit(): void {
     this.createEmployeeForm();
@@ -26,45 +29,53 @@ export class EditEmployeeComponent implements OnInit {
   createEmployeeForm(): void {
     this.employeeForm = new FormGroup({
       isNewForm: new FormControl(true, [Validators.required]),
-      firstName: new FormControl('', [Validators.required, Validators.maxLength(15)]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(15)]),
+      firstName: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
+      lastName: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
       phoneNumber: new FormControl(null, [Validators.required, Validators.min(10)]),
-      email: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      email: new FormControl(null, [Validators.required]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
     });
   }
 
   validateEmail(): void {
-    this.appService.getEmployeesData().subscribe((data) => {
-      if(data) {
-        this.employeesData = data;
-        if(
-          this.employeesData.filter(x => x.email === this.employeeForm.controls['email'].value).length > 0
-          && this.employeeForm.controls['email'].valid) 
-        {
-          this.isEmailInValid = true;
+    if (this.employeeForm.controls['isNewForm'].value) {
+      this.appService.getEmployeesData().subscribe((data) => {
+        if(data) {
+          this.employeesData = data;
+          if(
+            this.employeesData.filter(x => x.email === this.employeeForm.controls['email'].value).length > 0
+            && this.employeeForm.controls['email'].valid) 
+          {
+            this.isEmailInValid = true;
+          }
+          else {
+            this.isEmailInValid = false;
+          }
         }
-        else {
-          this.isEmailInValid = false;
-        }
-      }
-    });
+      });
+    } else{
+      this.isEmailInValid = false;
+    }
   }
 
   validatePhoneNumber(): void {
-    this.appService.getEmployeesData().subscribe((data) => {
-      if(data) {
-        this.employeesData = data;
-        if(
-          this.employeesData.filter(x => x.phoneNumber === this.employeeForm.controls['phoneNumber'].value).length > 0) 
-        {
-          this.isPhoneNumberInValid = true;
+    if (this.employeeForm.controls['isNewForm'].value) {
+      this.appService.getEmployeesData().subscribe((data) => {
+        if(data) {
+          this.employeesData = data;
+          if(
+            this.employeesData.filter(x => x.phoneNumber === this.employeeForm.controls['phoneNumber'].value).length > 0) 
+          {
+            this.isPhoneNumberInValid = true;
+          }
+          else {
+            this.isPhoneNumberInValid = false;
+          }
         }
-        else {
-          this.isPhoneNumberInValid = false;
-        }
-      }
-    });
+      });
+    } else {
+      this.isPhoneNumberInValid = false;
+    }
   }
 
   onSubmit(): void {
@@ -78,12 +89,8 @@ export class EditEmployeeComponent implements OnInit {
       });
 
     } else if (this.employeeForm.valid && !this.employeeForm.controls['isNewForm'].value) {
-        let employee = {} as Employee;
-        this.appService.$loggedInEmployeeData.subscribe((data) => {
-          employee = data;
-        });
         this.employeeData = this.employeeForm.value;
-        this.employeeData.id = employee.id;
+        this.employeeData.id = this.employeeId;
         this.appService.updateEmployee(this.employeeData).subscribe((status) => {
           if(status) {
             this.employeeForm.reset();
@@ -97,14 +104,19 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   checkForLoggedInEmployee(): void {
-    this.appService.$loggedInEmployeeData.subscribe((employee: Employee) => {
-      if (employee) {
-        this.employeeForm.controls['firstName'].setValue(employee.firstName);
-        this.employeeForm.controls['lastName'].setValue(employee.lastName);
-        this.employeeForm.controls['phoneNumber'].setValue(employee.phoneNumber);
-        this.employeeForm.controls['email'].setValue(employee.email);
-        this.employeeForm.controls['password'].setValue(employee.password);
-        this.employeeForm.controls['isNewForm'].setValue(false);
+    this.authService.$userData.subscribe((loginAuth: LoginAuth) => {
+      if (Object.keys(loginAuth).length > 0 && loginAuth?.isLoginSuccess) {
+        this.appService.getEmployeeData(loginAuth.empId).subscribe((employee: Employee) => {
+          if(Object.keys(employee).length > 0) {
+            this.employeeId = employee.id;
+            this.employeeForm.controls['firstName'].setValue(employee.firstName);
+            this.employeeForm.controls['lastName'].setValue(employee.lastName);
+            this.employeeForm.controls['phoneNumber'].setValue(employee.phoneNumber);
+            this.employeeForm.controls['email'].setValue(employee.email);
+            this.employeeForm.controls['password'].setValue(employee.password);
+            this.employeeForm.controls['isNewForm'].setValue(false);
+          }
+        });
       }
     });
   }

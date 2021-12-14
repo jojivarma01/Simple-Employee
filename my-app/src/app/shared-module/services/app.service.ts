@@ -38,5 +38,4 @@ export class AppService {
     return this.http.post<LoginAuth>(this.rootURL + '/auth', userAuthenticate);
   }
 
-  public $loggedInEmployeeData = new BehaviorSubject<Employee>(this.initialEmployeeData);
 }
