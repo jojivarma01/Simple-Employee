@@ -11,12 +11,12 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home-screen/home-screen.module').then(m => m.HomeScreenModule),
-    canActivate: [AuthGuardService]
+    canLoad: [AuthGuardService]
   },
   {
     path: 'edit',
     loadChildren: () => import('./edit-employee/edit-employee.module').then(m => m.EditEmployeeModule),
-    canActivate: [AuthGuardService]
+    canLoad: [AuthGuardService]
   },
   {
     path: 'login',
@@ -25,7 +25,7 @@ const routes: Routes = [
   {
     path: 'details',
     loadChildren: () => import('./employee-details/employee-details.module').then(m => m.EmployeeDetailsModule),
-    canActivate: [AuthGuardService]
+    canLoad: [AuthGuardService]
   },
   {
     path: '**',

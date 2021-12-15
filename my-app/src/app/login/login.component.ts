@@ -34,9 +34,8 @@ export class LoginComponent implements OnInit {
     if (this.employeeLoginForm.valid) {
       const email = this.employeeLoginForm.controls['email'].value;
       const password = this.employeeLoginForm.controls['password'].value;
-      this.authService.authenticateUser(email, password);
-      this.authService.$userData.subscribe((loginAuth: LoginAuth) => {
-        if (Object.keys(loginAuth).length > 0 && loginAuth.isLoginSuccess) {
+      this.authService.authenticateUser(email, password).subscribe((loginAuth) => {
+        if (loginAuth && loginAuth.isLoginSuccess) {
           this.router.navigate(['home']);
         } else {
           this.isCredentialsInValid = true;

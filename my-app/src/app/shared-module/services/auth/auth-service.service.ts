@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
 import { Employee, LoginAuth, User, UserAuthenticate } from '../../models/employee.model';
 import { AppService } from '../app.service';
 
@@ -17,28 +17,20 @@ export class AuthServiceService {
   constructor(private appService: AppService,
               private router: Router) { }
 
-  authenticateUser(userEmail: string, userPassword: string) {
+  authenticateUser(userEmail: string, userPassword: string): Observable<LoginAuth> {
     const userAuthenticate: UserAuthenticate = {email: userEmail, password: userPassword};
-    this.appService.authLogin(userAuthenticate).subscribe(async (res) => {
-      if(await res && res.isLoginSuccess) {
-        this.setToken(res);
-      }
-      else {
-        let loginAuth: LoginAuth = {
-          isLoginSuccess: false,
-          empId: 0,
-          userToken: ''
-        }
-        this.setToken(loginAuth);
+    const authLogin: Observable<LoginAuth> = this.appService.authLogin(userAuthenticate);
+    authLogin.subscribe((data) => {
+      if (data && data.isLoginSuccess) {
+        this.setToken(data);
+      } else {
+        this.setToken({isLoginSuccess: false, empId: 0, userToken: ''});
       }
     }, (error) => {
-      let loginAuth: LoginAuth = {
-        isLoginSuccess: false,
-        empId: 0,
-        userToken: ''
-      }
-      this.setToken(loginAuth);
+      this.setToken({isLoginSuccess: false, empId: 0, userToken: ''});
     });
+
+    return authLogin;
   }
 
   setToken(loggedInUser: LoginAuth) {
