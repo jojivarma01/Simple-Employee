@@ -14,6 +14,8 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
+  public $selectedEmployee: BehaviorSubject<Employee> = new BehaviorSubject<Employee>({} as Employee);
+
   getEmployeesData(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.rootURL + '/employees');
   }

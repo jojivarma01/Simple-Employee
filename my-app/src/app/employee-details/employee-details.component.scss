@@ -5,10 +5,14 @@
 
     .search-area {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-end;
         .search-box {
+            display: flex;
             width: 300px;
+            .bi-search {
+                font-size: 1rem;
+            }
         }
     }
 

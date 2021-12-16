@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { ColorChangeDirective } from './directives/color-change.directive';
 
@@ -10,7 +9,6 @@ import { ColorChangeDirective } from './directives/color-change.directive';
   declarations: [
     HeaderComponent,
     FooterComponent,
-    NavigationComponent,
     FullNamePipe,
     ColorChangeDirective
   ],
@@ -20,7 +18,6 @@ import { ColorChangeDirective } from './directives/color-change.directive';
   exports: [
     HeaderComponent,
     FooterComponent,
-    NavigationComponent,
     FullNamePipe,
     ColorChangeDirective
   ]

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Employee } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
 
@@ -12,7 +13,8 @@ export class EmployeeDetailsComponent implements OnInit {
   public employeesData: Employee[] = [];
   public tempEmployeesData: Employee[] = [];
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.getEmployeesData();
@@ -42,6 +44,16 @@ export class EmployeeDetailsComponent implements OnInit {
     } else {
       this.employeesData = this.tempEmployeesData;
     }    
+  }
+
+  editEmployee(employee: Employee): void {
+    console.log('employee', employee);
+    this.appService.$selectedEmployee.next(employee);
+    this.router.navigate(['edit']);
+  }
+
+  addEmployee(): void {
+    this.router.navigate(['add']);
   }
 
 }

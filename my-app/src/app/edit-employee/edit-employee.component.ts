@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, MaxLengthValidator, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Employee, LoginAuth } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
 import { AuthServiceService } from '../shared-module/services/auth/auth-service.service';
@@ -19,7 +20,8 @@ export class EditEmployeeComponent implements OnInit {
   public employeeId: number = 0;
 
   constructor(private appService: AppService,
-              private authService: AuthServiceService) { }
+              private authService: AuthServiceService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.createEmployeeForm();
@@ -28,7 +30,6 @@ export class EditEmployeeComponent implements OnInit {
 
   createEmployeeForm(): void {
     this.employeeForm = new FormGroup({
-      isNewForm: new FormControl(true, [Validators.required]),
       firstName: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
       lastName: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
       phoneNumber: new FormControl(null, [Validators.required, Validators.pattern("^[0-9]{10}$")]),
@@ -37,86 +38,33 @@ export class EditEmployeeComponent implements OnInit {
     });
   }
 
-  validateEmail(): void {
-    if (this.employeeForm.controls['isNewForm'].value) {
-      this.appService.getEmployeesData().subscribe((data) => {
-        if(data) {
-          this.employeesData = data;
-          if(
-            this.employeesData.filter(x => x.email === this.employeeForm.controls['email'].value).length > 0
-            && this.employeeForm.controls['email'].valid) 
-          {
-            this.isEmailInValid = true;
-          }
-          else {
-            this.isEmailInValid = false;
-          }
-        }
-      });
-    } else{
-      this.isEmailInValid = false;
-    }
-  }
-
-  validatePhoneNumber(): void {
-    if (this.employeeForm.controls['isNewForm'].value) {
-      this.appService.getEmployeesData().subscribe((data) => {
-        if(data) {
-          this.employeesData = data;
-          if(
-            this.employeesData.filter(x => x.phoneNumber === this.employeeForm.controls['phoneNumber'].value).length > 0) 
-          {
-            this.isPhoneNumberInValid = true;
-          }
-          else {
-            this.isPhoneNumberInValid = false;
-          }
-        }
-      });
-    } else {
-      this.isPhoneNumberInValid = false;
-    }
-  }
-
   onSubmit(): void {
-    console.log('formValid?-', this.employeeForm.valid, this.employeeForm.value);
-    if(this.employeeForm.valid && this.employeeForm.controls['isNewForm'].value) {
+    if (this.employeeForm.valid) {
       this.employeeData = this.employeeForm.value;
-      this.appService.saveEmployeeData(this.employeeData).subscribe((status) => {
+      this.employeeData.id = this.employeeId;
+      this.appService.updateEmployee(this.employeeData).subscribe((status) => {
         if(status) {
           this.employeeForm.reset();
+          this.router.navigate(['details']);
         }
       });
-
-    } else if (this.employeeForm.valid && !this.employeeForm.controls['isNewForm'].value) {
-        this.employeeData = this.employeeForm.value;
-        this.employeeData.id = this.employeeId;
-        this.appService.updateEmployee(this.employeeData).subscribe((status) => {
-          if(status) {
-            this.employeeForm.reset();
-          }
-        });
     }
   }
 
-  onReset(): void {
-    this.employeeForm.reset();
+  onCancel(): void {
+    this.router.navigate(['details']);
   }
 
   checkForLoggedInEmployee(): void {
-    this.authService.$userData.subscribe((loginAuth: LoginAuth) => {
-      if (Object.keys(loginAuth).length > 0 && loginAuth?.isLoginSuccess) {
-        this.appService.getEmployeeData(loginAuth.empId).subscribe((employee: Employee) => {
-          if(Object.keys(employee).length > 0) {
-            this.employeeId = employee.id;
-            this.employeeForm.controls['firstName'].setValue(employee.firstName);
-            this.employeeForm.controls['lastName'].setValue(employee.lastName);
-            this.employeeForm.controls['phoneNumber'].setValue(employee.phoneNumber);
-            this.employeeForm.controls['email'].setValue(employee.email);
-            this.employeeForm.controls['password'].setValue(employee.password);
-            this.employeeForm.controls['isNewForm'].setValue(false);
-          }
-        });
+    this.appService.$selectedEmployee.subscribe((employee: Employee) => {
+      if(Object.keys(employee).length > 0) {
+        console.log('edit employee', employee);
+        this.employeeId = employee.id;
+        this.employeeForm.controls['firstName'].setValue(employee.firstName);
+        this.employeeForm.controls['lastName'].setValue(employee.lastName);
+        this.employeeForm.controls['phoneNumber'].setValue(employee.phoneNumber);
+        this.employeeForm.controls['email'].setValue(employee.email);
+        this.employeeForm.controls['password'].setValue(employee.password);
       }
     });
   }

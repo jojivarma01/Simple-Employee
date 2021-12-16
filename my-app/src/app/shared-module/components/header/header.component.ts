@@ -28,8 +28,8 @@ export class HeaderComponent implements OnInit{
     this.authService.setTimerOut();
   }
 
-  onLogin() {
-    this.router.navigate(['login']);
+  navigateToUrl(url: string) {
+    this.router.navigate([url]);
   }
 
 }

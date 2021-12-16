@@ -1,9 +1,5 @@
 <div class="container text-center edit-form mt-4"> 
   <form [formGroup]="employeeForm">
-    <div class="form-switch">
-      <input class="form-check-input" type="checkbox" formControlName="isNewForm" role="switch" id="flexSwitchCheckDefault">
-      <label class="px-3">Add new employee</label>
-    </div>
     <div class="form-group mt-2">
       <label for="firstName">First Name</label>
       <input type="text" class="form-control" formControlName="firstName" placeholder="Enter first name">
@@ -16,7 +12,7 @@
     </div>
     <div class="form-group mt-2">
       <label for="phoneNumber">Phone number</label>
-      <input type="number" class="form-control" formControlName="phoneNumber" placeholder="Enter phone number" (blur)="validatePhoneNumber()">
+      <input type="number" class="form-control" formControlName="phoneNumber" placeholder="Enter phone number">
       <small class="text-danger"
        *ngIf="isPhoneNumberInValid || employeeForm.controls['phoneNumber'].hasError('pattern')">
        Phone number already exists or invalid
@@ -24,7 +20,7 @@
     </div>
     <div class="form-group mt-2">
       <label for="email">Email</label>
-      <input type="email" class="form-control" formControlName="email" placeholder="Enter your email" (blur)="validateEmail()">
+      <input type="email" class="form-control" formControlName="email" placeholder="Enter your email">
       <small class="text-danger"
        *ngIf="isEmailInValid || employeeForm.controls['email'].hasError('email')">
         Email address already exists or invalid
@@ -39,7 +35,7 @@
       </small>
     </div>
     <div class="form-group mt-2">
-      <button type="button" class="btn btn-secondary mx-4" (click)="onReset()">reset</button>
+      <button type="button" class="btn btn-secondary mx-4" (click)="onCancel()">Cancel</button>
       <button type="submit" class="btn btn-primary" (click)="onSubmit()" [disabled]="employeeForm.invalid">Submit</button>
     </div>
   </form>
