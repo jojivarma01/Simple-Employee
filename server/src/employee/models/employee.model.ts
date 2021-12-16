@@ -25,6 +25,7 @@ export interface LoginAuth {
   empId: number;
   isLoginSuccess: boolean;
   userToken: string;
+  role: string;
 }
 
 let connection:Connection;

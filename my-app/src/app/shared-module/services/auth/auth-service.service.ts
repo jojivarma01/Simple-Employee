@@ -19,18 +19,18 @@ export class AuthServiceService {
 
   authenticateUser(userEmail: string, userPassword: string): Observable<LoginAuth> {
     const userAuthenticate: UserAuthenticate = {email: userEmail, password: userPassword};
-    const userLogin: LoginAuth = {isLoginSuccess: false, empId: 0, userToken: ''};
+    const userLogin: LoginAuth = {isLoginSuccess: false, empId: 0, userToken: '',role: ''};
     return this.appService.authLogin(userAuthenticate).pipe(
       map((data) => {
         if (data && data.isLoginSuccess) {
           this.setToken(data);
           return data;
         } else {
-          this.setToken({isLoginSuccess: false, empId: 0, userToken: ''});
+          this.setToken(userLogin);
           return userLogin;
         }
       }, (error: Error) => {
-        this.setToken({isLoginSuccess: false, empId: 0, userToken: ''});
+        this.setToken(userLogin);
         return userLogin;
       })
     )

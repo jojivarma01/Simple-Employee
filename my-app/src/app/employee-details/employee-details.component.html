@@ -13,30 +13,30 @@
     </span>
   </div>
   <div class="row justify-content-md-center bg-dark text-light p-3">
-    <div class="col-3">
+    <div [ngClass]="isAdminLoggedIn ? 'col-3' : 'col-4'">
       FullName
     </div>
-    <div class="col-3">
+    <div [ngClass]="isAdminLoggedIn ? 'col-3' : 'col-4'">
       Phone Number
     </div>
-    <div class="col-3">
+    <div [ngClass]="isAdminLoggedIn ? 'col-3' : 'col-4'">
       Email
     </div>
-    <div class="col-3">
+    <div class="col-3" *ngIf="isAdminLoggedIn">
       Action
     </div>
   </div>
   <div class="row m-3 bg-light" *ngFor="let employee of employeesData">
-    <div class="col-3 p-1" appColorChange>
+    <div [ngClass]="isAdminLoggedIn ? 'col-3 p-1' : 'col-4 p-1'" appColorChange>
       {{employee | fullName}}
     </div>
-    <div class="col-3 p-1">
+    <div [ngClass]="isAdminLoggedIn ? 'col-3 p-1' : 'col-4 p-1'">
       {{employee?.phoneNumber}}
     </div>
-    <div class="col-3 p-1">
+    <div [ngClass]="isAdminLoggedIn ? 'col-3 p-1' : 'col-4 p-1'">
       {{employee?.email}}
     </div>
-    <div class="col-3">
+    <div class="col-3" *ngIf="isAdminLoggedIn">
       <a (click)="removeEmployee(employee)"><i class="bi bi-trash-fill"></i></a>
       <a class="ml-4" (click)="editEmployee(employee)"><i class="bi bi-pencil-fill"></i></a>
     </div>

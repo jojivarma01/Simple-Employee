@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Employee } from '../shared-module/models/employee.model';
+import { Employee, LoginAuth } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
+import { AuthServiceService } from '../shared-module/services/auth/auth-service.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -12,12 +13,15 @@ export class EmployeeDetailsComponent implements OnInit {
 
   public employeesData: Employee[] = [];
   public tempEmployeesData: Employee[] = [];
+  public isAdminLoggedIn: boolean = false;
 
   constructor(private appService: AppService,
+              private authService: AuthServiceService,
               private router: Router) { }
 
   ngOnInit(): void {
     this.getEmployeesData();
+    this.getUserData();
   }
 
   getEmployeesData(): void {
@@ -25,6 +29,14 @@ export class EmployeeDetailsComponent implements OnInit {
       if (this.employeesData) {
         this.employeesData = data;
         this.tempEmployeesData = this.employeesData;
+      }
+    });
+  }
+
+  getUserData(): void {
+    this.authService.$userData.subscribe((data: LoginAuth) => {
+      if (data && data.isLoginSuccess && data.role === 'admin') {
+        this.isAdminLoggedIn = true;
       }
     });
   }

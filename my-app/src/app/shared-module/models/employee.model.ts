@@ -21,4 +21,5 @@ export interface LoginAuth {
     empId: number;
     isLoginSuccess: boolean;
     userToken: string;
+    role: string;
 }

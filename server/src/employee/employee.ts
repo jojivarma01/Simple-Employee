@@ -128,6 +128,11 @@ router.post('/api/auth', async function (req: Request, res: Response, next: Next
     {
       if (filteredEmployeeData[0].password === req.body.password) {
         const createdtoken = jwt.sign({email: req.body.email}, 'secret');
+        if (filteredEmployeeData[0].email.includes('admin')) {
+          loginAuth.role = 'admin';
+        } else {
+          loginAuth.role = 'emp';
+        }
         loginAuth.empId = filteredEmployeeData[0].id;
         loginAuth.isLoginSuccess = true;
         loginAuth.userToken = createdtoken;
