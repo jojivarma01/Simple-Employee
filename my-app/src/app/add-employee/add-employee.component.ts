@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Employee } from '../shared-module/models/employee.model';
 import { AppService } from '../shared-module/services/app.service';
 
@@ -16,7 +17,8 @@ export class AddEmployeeComponent implements OnInit {
   public isEmailInValid: boolean = false;
   public isPhoneNumberInValid: boolean = false;
   
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.createEmployeeForm();
@@ -72,6 +74,7 @@ export class AddEmployeeComponent implements OnInit {
       this.appService.saveEmployeeData(this.employeeData).subscribe((status) => {
         if(status) {
           this.addEmployeeForm.reset();
+          this.router.navigate(['details']);
         }
       });
     }
