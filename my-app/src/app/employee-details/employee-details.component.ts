@@ -39,8 +39,8 @@ export class EmployeeDetailsComponent implements OnInit {
   onSearch(searchedValue: string): void {
     if (searchedValue)
     {
-      this.employeesData = this.employeesData.filter(x => x.firstName.includes(searchedValue)
-                                                          || x.lastName.includes(searchedValue));
+      this.employeesData = this.employeesData.filter(x => x.firstName.toUpperCase().includes(searchedValue.toUpperCase())
+                                                          || x.lastName.toUpperCase().includes(searchedValue.toUpperCase()));
     } else {
       this.employeesData = this.tempEmployeesData;
     }    
